@@ -57,7 +57,7 @@ public class Box {
 
 	public int getNumberIdRow() {
 		//id String - last letter (column)
-		int rowNumber = Integer.parseInt( id.substring(0, id.length()-2 ) );
+		int rowNumber = Integer.parseInt( id.substring(0, id.length()-1 ) );
 		return rowNumber;
 	}
 	
