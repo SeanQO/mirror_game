@@ -1,11 +1,11 @@
 package model;
 
 public class Game {
-	private Player player;
+	private String playerName;
 	private Board board;
 	private int score;
 	public Game(String playerName, int rows, int columns, int mirrorNumber) {
-		player = new Player(playerName);
+		this.playerName = playerName;
 		board = new Board(rows, columns, mirrorNumber);
 		board.generateBoxes();
 		score = 0;
@@ -19,8 +19,8 @@ public class Game {
 		return score;
 	}
 	
-	public Player getPlayer() {
-		return player;
+	public String getPlayerName() {
+		return playerName;
 	}
 	
 	public Board getBoard() {
@@ -28,7 +28,8 @@ public class Game {
 	}
 	
 	public String drawBoard() {
-		return board.toString();
+		String playerNameAndscore = playerName + ": " + score;
+		return playerNameAndscore + "\n" +board.toString();
 	}
 	
 }

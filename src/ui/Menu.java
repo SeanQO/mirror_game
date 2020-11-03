@@ -1,12 +1,16 @@
 package ui;
+import java.io.IOException;
 import java.util.Scanner;
+
+import model.DataManager;
 import model.Game;
 
 public class Menu {
 	private Scanner in;
-	
+	private DataManager dManager;
 	public Menu() {
 		in = new Scanner(System.in);
+		dManager = new DataManager();
 	}
 	
 	private void pressAnyKeyToContinue() {
@@ -16,6 +20,13 @@ public class Menu {
 	}
 	
 	public void startProgram() {
+		try {
+			dManager.loadData();
+		} catch (ClassNotFoundException classNotFoundException) {
+			System.err.println("-Couldnt find any previous saved data.");
+		}catch (IOException ioException) {
+			System.err.println("-Couldnt find any previous saved data.");
+		}
 		int option = 0;
 		boolean exit = false;
 		do {
@@ -32,6 +43,13 @@ public class Menu {
 			}
 	
 		} while (!exit);
+		
+		try {
+			dManager.saveData();
+		} catch (IOException ioException) {
+			System.err.println("-Couldnt save data.");
+		}
+		
 	}
 	
 	private boolean runOptions(int option) {

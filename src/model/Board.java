@@ -6,6 +6,7 @@ public class Board {
 	private int columns;
 	@SuppressWarnings("unused")
 	private int mirrorNumber;
+	private String columnsLine;
 
 	public Board(int rows, int columns, int mirrorNumber) {
 		this.rows = rows;
@@ -71,10 +72,18 @@ public class Board {
 		}
 		return newBox;
 	}
-
+	
+	private String columnsLine(Box currentBox) {
+		String columnsString = " " + (char)currentBox.getColumn() + " ";
+		if (currentBox.getRightBox() != null) {
+			columnsString += columnsLine(currentBox.getRightBox());
+		}
+		return columnsString;
+	}
+	
 	@Override
 	public String toString() {
-		String board = "["+ firstBox.getId() +"]";
+		String board = " " + columnsLine(firstBox) + "\n1[ ]";
 		if (firstBox.getRightBox() != null) {
 			board += toString(firstBox, firstBox.getRightBox());
 		}else if (firstBox.getBottomBox() != null) {
@@ -89,20 +98,20 @@ public class Board {
 	private String toString(Box firstRowBox, Box nextInRow) {
 		String board = "";
 		if (nextInRow == null) {
-			board += "\n["+ firstRowBox.getBottomBox().getId() +"]" ;
+			board += "\n" + firstRowBox.getRow() +"[ ]" ;
 			board += toString(firstRowBox.getBottomBox(),null);
 		}else {
-			board += "["+ nextInRow.getId() +"]" ;
+			board += "[ ]" ;
 			if (nextInRow.getRightBox() != null) {
 				board += toString(firstRowBox,nextInRow.getRightBox());
 			}else if (firstRowBox.getBottomBox() != null) {
-				board += "\n["+ firstRowBox.getBottomBox().getId() +"]" ;
+				board += "\n" + firstRowBox.getBottomBox().getRow() +"[ ]" ;
 				board += toString(firstRowBox.getBottomBox(),firstRowBox.getBottomBox().getRightBox());
 			}
 		}
 		return board;
 	}
-
+	
 
 }
 
