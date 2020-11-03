@@ -9,14 +9,24 @@ public class Box {
 	 rows {1,n}
 	 columns{65/A,90/z}
 	 */
-	private String id;
+	private int row;
+	private int column;
 	
-	public Box(Box upperBox, Box bottomBox, Box rightBox, Box leftBox, String id) {
-		this.upperBox = upperBox;
-		this.bottomBox = bottomBox;
-		this.rightBox = rightBox;
-		this.leftBox = leftBox;
-		this.id = id;
+	public Box(int row, int column) {
+		this.row = row;
+		this.column = column;
+		upperBox = null;
+		bottomBox = null;
+		rightBox = null;
+		leftBox = null;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+
+	public int getColumn() {
+		return column;
 	}
 
 	public Box getUpperBox() {
@@ -35,7 +45,11 @@ public class Box {
 		return leftBox;
 	}
 	
-	public String getStringId() {
+	public String getId() {
+		String id = row + "";
+		
+		id += (char)column;
+		
 		return id;
 	}
 
@@ -53,18 +67,6 @@ public class Box {
 
 	public void setLeftBox(Box leftBox) {
 		this.leftBox = leftBox;
-	}
-
-	public int getNumberIdRow() {
-		//id String - last letter (column)
-		int rowNumber = Integer.parseInt( id.substring(0, id.length()-1 ) );
-		return rowNumber;
-	}
-	
-	public int getNumberIdColumn() {
-		//id string last char, column number
-		int columnNumber = id.charAt(id.length()-1);
-		return columnNumber;
 	}
 	
 }

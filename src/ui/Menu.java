@@ -77,8 +77,7 @@ public class Menu {
 		int columns = Integer.parseInt( gameConditions[2] );
 		
 		Board board = new Board(rows, columns, 0);
-		board.generateBoxes();
-		
+		board.fillBoard();		
 		System.out.println(board.drawBoard());
 		
 		
