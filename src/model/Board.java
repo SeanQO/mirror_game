@@ -1,18 +1,20 @@
 package model;
+
 public class Board {
 	private Box firstBox;
 	private int rows;
 	private int columns;
-	//private int mirrorNumber;
+	@SuppressWarnings("unused")
+	private int mirrorNumber;
 
 	public Board(int rows, int columns, int mirrorNumber) {
 		this.rows = rows;
 		this.columns = columns + 64;
-		//this.mirrorNumber = mirrorNumber;
+		this.mirrorNumber = mirrorNumber;
 	}
 	
 	
-	public void fillBoard() {
+	public void generateBoxes() {
 		firstBox = new Box(1,65);
 		if (rows != 1 && columns != 1) {
 			Box lastAddedBox = firstBox;
@@ -21,7 +23,7 @@ public class Board {
 	}
 
 	
-	public void generateBoxes(Box lastAddedBox, int currentRow, int currentColumn, Box upperBox) {
+	private void generateBoxes(Box lastAddedBox, int currentRow, int currentColumn, Box upperBox) {
 		if (currentColumn + 1 <= columns) {
 			Box newBox = new Box(currentRow,currentColumn+1);
 			lastAddedBox.setRightBox(newBox);
@@ -31,7 +33,12 @@ public class Board {
 			}else {
 				upperBox.setBottomBox(newBox);
 				newBox.setUpperBox(upperBox);
-				generateBoxes(newBox, currentRow, currentColumn + 1, upperBox.getRightBox());
+				if (upperBox.getRightBox() == null) {
+					generateBoxes(newBox,currentRow, currentColumn + 1, upperBox );
+				}else {
+					generateBoxes(newBox, currentRow, currentColumn + 1, upperBox.getRightBox());
+				}
+				
 			}
 			
 		}else if (currentRow +1 <= rows) {
@@ -60,18 +67,18 @@ public class Board {
 	private Box getFirstColumnBox(Box currentBox, int row) {
 		Box newBox = currentBox;
 		if (currentBox.getRow() != row) {
-			newBox = getFirstColumnBox(firstBox.getBottomBox().getBottomBox(),row);
+			newBox = getFirstColumnBox(currentBox.getBottomBox(),row);
 		}
 		return newBox;
 	}
 
-
-	public String drawBoard() {
+	@Override
+	public String toString() {
 		String board = "["+ firstBox.getId() +"]";
 		if (firstBox.getRightBox() != null) {
-			board += drawBoard(firstBox, firstBox.getRightBox());
+			board += toString(firstBox, firstBox.getRightBox());
 		}else if (firstBox.getBottomBox() != null) {
-			board += drawBoard(firstBox.getBottomBox(),null);
+			board += toString(firstBox.getBottomBox(),null);
 		}
 
 
@@ -79,18 +86,18 @@ public class Board {
 	}
 
 	
-	private String drawBoard(Box firstRowBox, Box nextInRow) {
+	private String toString(Box firstRowBox, Box nextInRow) {
 		String board = "";
 		if (nextInRow == null) {
 			board += "\n["+ firstRowBox.getBottomBox().getId() +"]" ;
-			board += drawBoard(firstRowBox.getBottomBox(),null);
+			board += toString(firstRowBox.getBottomBox(),null);
 		}else {
 			board += "["+ nextInRow.getId() +"]" ;
 			if (nextInRow.getRightBox() != null) {
-				board += drawBoard(firstRowBox,nextInRow.getRightBox());
+				board += toString(firstRowBox,nextInRow.getRightBox());
 			}else if (firstRowBox.getBottomBox() != null) {
 				board += "\n["+ firstRowBox.getBottomBox().getId() +"]" ;
-				board += drawBoard(firstRowBox.getBottomBox(),firstRowBox.getBottomBox().getRightBox());
+				board += toString(firstRowBox.getBottomBox(),firstRowBox.getBottomBox().getRightBox());
 			}
 		}
 		return board;

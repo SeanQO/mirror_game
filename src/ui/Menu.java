@@ -1,7 +1,7 @@
 package ui;
 import java.util.Scanner;
+import model.Game;
 
-import model.Board;
 public class Menu {
 	private Scanner in;
 	
@@ -42,7 +42,7 @@ public class Menu {
 				try {
 					runOptionOne();
 				} catch (NumberFormatException numberFormatException) {
-					numberFormatException.printStackTrace();
+					
 					
 				}
 				
@@ -67,21 +67,42 @@ public class Menu {
 		System.out.println("3.Exit");
 	}
 	
-	private void runOptionOne() throws NumberFormatException{
-		System.out.println("**********************");
-		System.out.println("-Enter the name, dimensions of the board and mirror number separated by space:");
-		System.out.println("example: name 2 2 1 --> to create a gamer for the user 'name' and a board of 2x2  [rows]x[columns] and 1 mirror.");
-		String[] gameConditions = in.nextLine().split("\\s+"); 
-		String name = gameConditions[0];
-		int rows = Integer.parseInt( gameConditions[1] );
-		int columns = Integer.parseInt( gameConditions[2] );
+	private void runOptionOne() {
+		Game game = null;
+		boolean error = false;
+		do {
+			error = false;
+			try {
+				game = startGame();
+			} catch (Exception e) {
+				error = true;
+				System.err.println("the entered information is invalid, please check the format: name n m k");
+			}
+		} while (error);
 		
-		Board board = new Board(rows, columns, 0);
-		board.fillBoard();		
-		System.out.println(board.drawBoard());
+		game.getBoard().generateBoxes();
+		System.out.println(game.drawBoard());
 		
 		
 	}
+	
+	private Game startGame() throws NumberFormatException{
+		System.out.println("**********************");
+		System.out.println("-Enter the name, dimensions of the board and mirror number separated by space:");
+		System.out.println("example: name 2 2 1 --> to create a gamer for the user 'name' and a board of 2x2  [rows]x[columns] and 1 mirror.");
+		System.out.println("the maximum number of columns is 26 - from A-Z");
+		String[] gameConditions = in.nextLine().split("\\s+"); 
+		
+		String name = gameConditions[0];
+		int rows = Integer.parseInt( gameConditions[1] );
+		int columns = Integer.parseInt( gameConditions[2] );
+		int mirrorNumber = Integer.parseInt( gameConditions[3]);
+		
+		Game game = new Game(name, rows, columns, mirrorNumber);
+		
+		return game;
+		
+	} 
 	
 	
 	
