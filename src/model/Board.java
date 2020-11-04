@@ -1,12 +1,13 @@
 package model;
 
+import java.util.Random;
+
 public class Board {
 	private Box firstBox;
 	private int rows;
 	private int columns;
 	@SuppressWarnings("unused")
 	private int mirrorNumber;
-	private String columnsLine;
 
 	public Board(int rows, int columns, int mirrorNumber) {
 		this.rows = rows;
@@ -14,7 +15,7 @@ public class Board {
 		this.mirrorNumber = mirrorNumber;
 	}
 	
-	
+	// *********************** Create board
 	public void generateBoxes() {
 		firstBox = new Box(1,65);
 		if (rows != 1 && columns != 1) {
@@ -23,7 +24,6 @@ public class Board {
 		}
 	}
 
-	
 	private void generateBoxes(Box lastAddedBox, int currentRow, int currentColumn, Box upperBox) {
 		if (currentColumn + 1 <= columns) {
 			Box newBox = new Box(currentRow,currentColumn+1);
@@ -56,7 +56,7 @@ public class Board {
 		
 	}
 	
-	public Box getFirstColumnBox(int row) {
+	private Box getFirstColumnBox(int row) {
 		Box newBox = firstBox.getBottomBox();
 		if (firstBox.getBottomBox().getRow() != row) {
 			newBox = getFirstColumnBox(firstBox.getBottomBox().getBottomBox(),row);
@@ -73,6 +73,45 @@ public class Board {
 		return newBox;
 	}
 	
+	public void addMirrors(int mirrorsToAssign) {		
+		Random random = new Random();
+		
+		if (mirrorsToAssign > 0) {
+			int row = random.nextInt(rows) + 1;
+			int column = random.nextInt(columns-64)+65;
+			System.out.println("row: "+ row + " column: " + column);
+			addMirrors(firstBox,row, column);
+			if (mirrorsToAssign - 1 > 0) {
+				addMirrors(mirrorsToAssign - 1);
+			}
+			
+		}
+	
+	}
+	
+	private void addMirrors(Box currentBox,int row, int column) {
+		if (currentBox.getRow() == row) {
+			if (currentBox.getColumn() == column) {
+				Random random = new Random();
+				Mirror mirror = null;
+				if (random.nextInt(1) == 1) {
+					mirror = Mirror.LEFT_MIRROR;
+				}else {
+					mirror = Mirror.RIGHT_MIRROR;
+				}
+				currentBox.setMirror(mirror);
+			}else {
+				addMirrors(currentBox.getRightBox(),row,column);
+			}
+			
+		}else {
+			addMirrors(currentBox.getBottomBox(), row, column);
+		}
+
+	}
+
+	
+// *********************** board to string
 	private String columnsLine(Box currentBox) {
 		String columnsString = " " + (char)currentBox.getColumn() + " ";
 		if (currentBox.getRightBox() != null) {

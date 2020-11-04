@@ -5,12 +5,9 @@ public class Box {
 	private Box bottomBox;
 	private Box rightBox;
 	private Box leftBox;
-	/*
-	 rows {1,n}
-	 columns{65/A,90/z}
-	 */
 	private int row;
 	private int column;
+	private Mirror mirror;
 	
 	public Box(int row, int column) {
 		this.row = row;
@@ -19,6 +16,7 @@ public class Box {
 		bottomBox = null;
 		rightBox = null;
 		leftBox = null;
+		mirror = Mirror.EMPTY;
 	}
 	
 	public int getRow() {
@@ -53,6 +51,14 @@ public class Box {
 		return id;
 	}
 
+	public Mirror getMirror() {
+		return mirror;
+	}
+	
+	public void setMirror(Mirror mirror) {
+		this.mirror = mirror;
+	}
+	
 	public void setUpperBox(Box upperBox) {
 		this.upperBox = upperBox;
 	}

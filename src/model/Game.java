@@ -8,6 +8,7 @@ public class Game {
 		this.playerName = playerName;
 		board = new Board(rows, columns, mirrorNumber);
 		board.generateBoxes();
+		board.addMirrors(mirrorNumber);
 		score = 0;
 	}
 	
