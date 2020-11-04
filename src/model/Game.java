@@ -38,9 +38,9 @@ public class Game {
 		this.cheat = cheat;
 	}
 
-	public String drawBoard() {
+	public String drawBoard(String startBox, String finishBox , String findedBox) {
 		String playerNameAndscore = playerName + ": " + score;
-		return playerNameAndscore + "\n" + board.toString(cheat);
+		return playerNameAndscore + "\n" + board.toString(startBox, finishBox, findedBox, cheat);
 
 	}
 
@@ -195,12 +195,17 @@ public class Game {
 	public String locate(String input) {
 		Box locateBox = board.getBox(input.substring(1,input.length()-1));
 		String mirrorDirection = input.charAt(input.length()-1) + "";
+		System.out.println("LocateB: " + locateBox.getId() + " " + locateBox.getMirror() + "Mdir: " + mirrorDirection);
+		System.out.println(locateBox.getMirror().equals(Mirror.RIGHT_MIRROR) + " L: " + locateBox.getMirror().equals(Mirror.LEFT_MIRROR));
 		if (locateBox.getMirror() != Mirror.EMPTY) {
 			if (locateBox.getMirror().equals(Mirror.RIGHT_MIRROR) && mirrorDirection.equals("R")) {
+				System.out.println("Located");
 				locateBox.setFounded(true);
-				if (locateBox.getMirror().equals(Mirror.LEFT_MIRROR) && mirrorDirection.equals("L")) {
-					locateBox.setFounded(true);
-				}
+				
+			}else if (locateBox.getMirror().equals(Mirror.LEFT_MIRROR) && mirrorDirection.equals("L")) {
+				System.out.println("Located");
+				locateBox.setFounded(true);
+				
 			}
 		}
 		

@@ -126,7 +126,6 @@ public class Menu {
 	} 
 
 	private void runGame(Game game, String sBox, String eBox, String located) {
-		System.out.println("Sbox: " + sBox + " eBox: " + eBox + " located: " + located);
 		System.out.println("**********************");
 		System.out.println("Input options:");
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
@@ -134,12 +133,14 @@ public class Menu {
 		System.out.println("to go back to the main menu: 'menu'");
 		System.out.println("-All input characters must be on uppercase, cant shoot from a box that not on the border of the matrix.");
 		System.out.println("**********************");
-		System.out.println(game.drawBoard());
+		System.out.println("- S --> where the laser entered, E --> where the laser came out, M --> if the laser entered and came out in the same box.");
+		System.out.println("- X --> the box sought doesnt have a mirror or the mirror is not in the correct direction");
+		System.out.println(game.drawBoard(sBox, eBox, located));
 		String input = in.nextLine();
 
 		try {
 			if (input.equals("cheat")) {
-				game.setCheat(true);
+				game.setCheat(!game.isCheat());
 				runGame(game,"","","");
 
 			}else {

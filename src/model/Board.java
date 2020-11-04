@@ -135,21 +135,16 @@ public class Board {
 	}
 
 
-	public String toString(boolean cheat) {
+	public String toString(String startBox, String finishBox , String findedBox, boolean cheat) {
 		String board = " " + columnsLine(firstBox) + "\n1";
-		String mirror = firstBox.getMirror().getString();
-		if (cheat) {
-			board += "[" + mirror + "]";
-
-		}else {
-			board += "[" + ((firstBox.isFounded())? mirror : " ")  + "]";
-
-		}
+		String inBox = getInBoxValue(firstBox, startBox, finishBox, findedBox, cheat);
+		board += "[" + inBox + "]";
+		
 		if (firstBox.getRightBox() != null) {
-			board += toString(firstBox,firstBox.getRightBox(), cheat);
+			board += toString(firstBox,firstBox.getRightBox(), startBox, finishBox, findedBox, cheat);
 
 		}else if (firstBox.getBottomBox() != null) {
-			board += "\n2" + toString(firstBox.getBottomBox(),firstBox.getBottomBox(),cheat);
+			board += "\n2" + toString(firstBox.getBottomBox(),firstBox.getBottomBox(), startBox, finishBox, findedBox,cheat);
 
 		}
 
@@ -157,26 +152,45 @@ public class Board {
 		return board;
 	}
 
-	private String toString(Box firstinRow, Box currentBox, boolean cheat) {
+	private String toString(Box firstinRow, Box currentBox, String startBox, String finishBox , String findedBox, boolean cheat) {
 		String board = "";
-		String mirror = currentBox.getMirror().getString(); 
-
-		if (cheat) {
-			board += "[" + mirror + "]";
-
-		}else {
-			board += "[" + ((currentBox.isFounded())? mirror : " ")  + "]";
-
-		}
+		String inBox = getInBoxValue(currentBox, startBox, finishBox, findedBox, cheat);
+		board += "[" + inBox + "]";
+		
 		if (currentBox.getRightBox() != null) {
-			board += toString(firstinRow, currentBox.getRightBox(), cheat);
+			board += toString(firstinRow, currentBox.getRightBox(),  startBox, finishBox, findedBox, cheat);
 
 		}else if (currentBox.getBottomBox() != null) {
-			board += "\n"+ currentBox.getBottomBox().getRow() + toString(firstinRow.getBottomBox(), firstinRow.getBottomBox(),cheat);
+			board += "\n"+ currentBox.getBottomBox().getRow() + toString(firstinRow.getBottomBox(), firstinRow.getBottomBox(), startBox, finishBox, findedBox,cheat);
 
 		}
 
 		return board;
+	}
+
+	private String getInBoxValue(Box curentBox, String startBox, String finishBox , String findedBox, boolean cheat) {
+		String value = " ";
+
+		if (cheat) {
+			value = curentBox.getMirror().getString();
+
+		}
+
+		if (curentBox.isFounded()) {
+			value = curentBox.getMirror().getString();
+		}else if (curentBox.getId().equals(findedBox)) {
+			value = "X";
+		}
+		
+		if (curentBox.getId().equals(startBox) && curentBox.getId().equals(finishBox)) {
+			value = "M";
+		}else if (curentBox.getId().equals(startBox)) {
+			value = "S";
+		}else if(curentBox.getId().equals(finishBox)) {
+			value = "E";
+		}
+
+		return value;
 	}
 
 	public Box getBox(String id) {
