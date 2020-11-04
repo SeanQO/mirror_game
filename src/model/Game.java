@@ -56,59 +56,139 @@ public class Game {
 		}else if (startBox.getRow() == board.getRows()) {
 			finalBox = shootUpward(startBox);
 		}
-
+		System.out.println(finalBox.getId());
 		return finalBox.getId();
 	}
 
-	public void shootFromCorner(String input) {
-
+	public String shootFromCorner(String input) {
+		String id = input.substring(0, input.length()-1);
+		Box startBox = board.getBox(id);
+		Box finalBox = null;
+		
+		if (startBox.getRow() == 1 && startBox.getColumn() == 65) {
+			if (input.charAt(input.length()-1) == 'V') {
+				finalBox = shootDownward(startBox);
+			}else {
+				finalBox = shootRight(startBox);
+			}
+			
+		}else if (startBox.getRow() == board.getRows() && startBox.getColumn() == 65) {
+			if (input.charAt(input.length()-1) == 'V') {
+				finalBox = shootUpward(startBox);
+			}else {
+				finalBox = shootRight(startBox);
+			}
+			
+		}else if (startBox.getRow() == 1 && startBox.getColumn() == board.getColumns()) {
+			if (input.charAt(input.length()-1) == 'V') {
+				finalBox = shootDownward(startBox);
+			}else {
+				finalBox = shootLeft(startBox);
+			}
+			
+		}else if (startBox.getRow() == board.getRows() && startBox.getColumn() == board.getColumns() ) {
+			if (input.charAt(input.length()-1) == 'V') {
+				finalBox = shootUpward(startBox);
+			}else {
+				finalBox = shootLeft(startBox);
+			}
+			
+		}
+		
+		return finalBox.getId();
 	}
 
 	private Box shootLeft(Box currentBox) {
-		Box finalBox = null;
+		Box finalBox = currentBox;
 		switch (currentBox.getMirror()) {
 		case RIGHT_MIRROR:
 			if (currentBox.getBottomBox() != null) {
-				shootDownward(currentBox.getBottomBox());
-			}else {
-				finalBox = currentBox;
+				finalBox = shootDownward(currentBox.getBottomBox());
 			}
 			break;
 
 		case LEFT_MIRROR:
 			if (currentBox.getUpperBox() != null) {
-				shootUpward(currentBox.getUpperBox());
-			}else {
-				finalBox = currentBox;
+				finalBox = shootUpward(currentBox.getUpperBox());
 			}
 			break;
 		case EMPTY:
 			if (currentBox.getLeftBox() != null) {
-				shootLeft(currentBox.getLeftBox());
-			}else {
-				finalBox = currentBox;
+				finalBox = shootLeft(currentBox.getLeftBox());
 			}
 			break;
 		}
-		
-		
 		return finalBox;
 	}
 
 
 	private Box shootRight(Box currentBox) {
-		Box finalBox = null;
+		Box finalBox = currentBox;
+		switch (currentBox.getMirror()) {
+		case RIGHT_MIRROR:
+			if (currentBox.getUpperBox() != null) {
+				finalBox = shootUpward(currentBox.getUpperBox());
+			}
+			break;
+
+		case LEFT_MIRROR:
+			if (currentBox.getBottomBox() != null) {
+				finalBox = shootDownward(currentBox.getBottomBox());
+			}
+			break;
+		case EMPTY:
+			if (currentBox.getRightBox() != null) {
+				finalBox = shootRight(currentBox.getRightBox());
+			}
+			break;
+		}
 		return finalBox;
 	}
 
 
 	private Box shootUpward(Box currentBox) {
-		Box finalBox = null;
+		Box finalBox = currentBox;
+		switch (currentBox.getMirror()) {
+		case RIGHT_MIRROR:
+			if (currentBox.getRightBox() != null) {
+				finalBox = shootRight(currentBox.getRightBox());
+			}
+			break;
+
+		case LEFT_MIRROR:
+			if (currentBox.getLeftBox() != null) {
+				finalBox = shootLeft(currentBox.getLeftBox());
+			}
+			break;
+		case EMPTY:
+			if (currentBox.getUpperBox() != null) {
+				finalBox = shootUpward(currentBox.getUpperBox());
+			}
+			break;
+		}
 		return finalBox;
 	}
 
 	private Box shootDownward(Box currentBox) {
-		Box finalBox = null;
+		Box finalBox = currentBox;
+		switch (currentBox.getMirror()) {
+		case RIGHT_MIRROR:
+			if (currentBox.getLeftBox() != null) {
+				finalBox = shootLeft(currentBox.getLeftBox());
+			}
+			break;
+
+		case LEFT_MIRROR:
+			if (currentBox.getRightBox() != null) {
+				finalBox = shootRight(currentBox.getRightBox());
+			}
+			break;
+		case EMPTY:
+			if (currentBox.getBottomBox() != null) {
+				finalBox = shootDownward(currentBox.getBottomBox());
+			}
+			break;
+		}
 		return finalBox;
 	}
 

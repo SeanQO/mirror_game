@@ -126,6 +126,7 @@ public class Menu {
 	} 
 
 	private void runGame(Game game, String sBox, String eBox, String miss) {
+		System.out.println("Sbox: " + sBox + " eBox: " + eBox + " miss: " + miss);
 		System.out.println("**********************");
 		System.out.println("Input options:");
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
@@ -147,8 +148,8 @@ public class Menu {
 					
 					if (isShootFromCorner) {
 						sBox = input.substring(0,input.length()-1);
-						game.shootFromCorner(input);
-						runGame(game,sBox,"","");
+						eBox = game.shootFromCorner(input);
+						runGame(game,sBox,eBox,"");
 						
 					}else {
 						boolean isShoot = isShoot(input, game);

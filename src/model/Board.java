@@ -207,13 +207,13 @@ public class Board {
 		Box box = currentBox;
 		if (currentBox.getRow() != row) {
 			if (currentBox.getBottomBox() != null) {
-				getBox(currentBox.getBottomBox(),row, column);
+				box = getBox(currentBox.getBottomBox(),row, column);
 			}
 			
 		}else {
 			if (currentBox.getColumn() != column) {
 				if (currentBox.getRightBox() != null) {
-					getBox(currentBox.getRightBox(),row, column);
+					box = getBox(currentBox.getRightBox(),row, column);
 				}
 			}else {
 				box = currentBox;
