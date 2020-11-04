@@ -44,42 +44,72 @@ public class Game {
 
 	}
 
-	public void shoot(String input) {
+	public String shoot(String input) {
 		Box startBox = board.getBox(input);
-
+		Box finalBox = null;
 		if (startBox.getColumn() == board.getColumns()) {
-			shootLeft();
+			finalBox = shootLeft(startBox);
 		}else if(startBox.getColumn() == 65) {
-			shootRight();
+			finalBox = shootRight(startBox);
 		}else if (startBox.getRow() == 1) {
-			shootDownward();
+			finalBox = shootDownward(startBox);
 		}else if (startBox.getRow() == board.getRows()) {
-			shootUpward();
+			finalBox = shootUpward(startBox);
 		}
 
-
+		return finalBox.getId();
 	}
 
 	public void shootFromCorner(String input) {
 
 	}
 
-	private void shootLeft() {
+	private Box shootLeft(Box currentBox) {
+		Box finalBox = null;
+		switch (currentBox.getMirror()) {
+		case RIGHT_MIRROR:
+			if (currentBox.getBottomBox() != null) {
+				shootDownward(currentBox.getBottomBox());
+			}else {
+				finalBox = currentBox;
+			}
+			break;
 
+		case LEFT_MIRROR:
+			if (currentBox.getUpperBox() != null) {
+				shootUpward(currentBox.getUpperBox());
+			}else {
+				finalBox = currentBox;
+			}
+			break;
+		case EMPTY:
+			if (currentBox.getLeftBox() != null) {
+				shootLeft(currentBox.getLeftBox());
+			}else {
+				finalBox = currentBox;
+			}
+			break;
+		}
+		
+		
+		return finalBox;
 	}
 
 
-	private void shootRight() {
-
+	private Box shootRight(Box currentBox) {
+		Box finalBox = null;
+		return finalBox;
 	}
 
 
-	private void shootUpward() {
-
+	private Box shootUpward(Box currentBox) {
+		Box finalBox = null;
+		return finalBox;
 	}
 
-	private void shootDownward() {
-
+	private Box shootDownward(Box currentBox) {
+		Box finalBox = null;
+		return finalBox;
 	}
 
 	public void locate(String input) {

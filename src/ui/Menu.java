@@ -13,13 +13,13 @@ public class Menu {
 		in = new Scanner(System.in);
 		dManager = new DataManager();
 	}
-	
+
 	private void pressAnyKeyToContinue() {
 		System.out.println("************************");
 		System.out.println("Press any key to continue");
 		in.nextLine();
 	}
-	
+
 	public void startProgram() {
 		try {
 			dManager.loadData();
@@ -34,9 +34,9 @@ public class Menu {
 		} catch (IOException ioException) {
 			System.err.println("-Couldnt save data.");
 		}
-		
+
 	}
-	
+
 	private void showMenu() {
 		System.out.println("**********************");
 		System.out.println("****PRINCIPAL MENU****");
@@ -44,12 +44,12 @@ public class Menu {
 		System.out.println("1.Play");
 		System.out.println("3.Exit");
 	}
-	
+
 	private void principalMenu() {
 		showMenu();
 		int option = 0;
 		boolean exit = false;
-		
+
 		try {
 			option  = Integer.parseInt( in.nextLine() );
 			exit = runOptions(option);
@@ -61,12 +61,12 @@ public class Menu {
 			pressAnyKeyToContinue();
 			principalMenu();
 		}
-		
+
 		if (!exit) {
 			principalMenu();
 		}
 	}
-	
+
 	private boolean runOptions(int option) {
 		boolean exit = false;
 		switch (option) {
@@ -78,11 +78,11 @@ public class Menu {
 			exit = true;
 			break;
 		}
-		
-		
+
+
 		return exit;
 	}
-	
+
 	private void runOptionOne() {
 		Game game = null;
 		try {
@@ -98,17 +98,17 @@ public class Menu {
 			pressAnyKeyToContinue();
 			runOptionOne();
 		}
-		game(game);
-		
+		runGame(game,"","","");
+
 	}
-	
+
 	private Game startGame() throws NumberFormatException, ArrayIndexOutOfBoundsException{
 		System.out.println("**********************");
 		System.out.println("-Enter the name, dimensions of the board and mirror number separated by space:");
 		System.out.println("example: name 2 2 1 --> to create a gamer for the user 'name' and a board of 2x2  [rows]x[columns] and 1 mirror.");
 		System.out.println("the maximum number of columns is 26 - from A-Z");
 		String[] gameConditions = in.nextLine().split("\\s+"); 
-		
+
 		String name = gameConditions[0];
 		int rows = Integer.parseInt( gameConditions[1] );
 		int columns = Integer.parseInt( gameConditions[2] );
@@ -120,12 +120,12 @@ public class Menu {
 			throw new NumberFormatException();
 		}
 		Game game = new Game(name, rows, columns, mirrorNumber);
-		
+
 		return game;
-		
+
 	} 
-	
-	private void game(Game game) {
+
+	private void runGame(Game game, String sBox, String eBox, String miss) {
 		System.out.println("**********************");
 		System.out.println("Input options:");
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
@@ -135,57 +135,69 @@ public class Menu {
 		System.out.println("**********************");
 		System.out.println(game.drawBoard());
 		String input = in.nextLine();
-		
+
 		try {
 			if (input.equals("cheat")) {
 				game.setCheat(true);
-				game(game);
+				runGame(game,"","","");
+
 			}else {
 				if (!input.equals("menu")) {
 					boolean isShootFromCorner = isShootFromCorner(input, game);
+					
 					if (isShootFromCorner) {
+						sBox = input.substring(0,input.length()-1);
 						game.shootFromCorner(input);
-						game(game);
+						runGame(game,sBox,"","");
+						
 					}else {
 						boolean isShoot = isShoot(input, game);
 						if (isShoot) {
-							game.shoot(input);
-							game(game);
+							sBox = input;
+							eBox = game.shoot(input);
+							runGame(game,sBox,eBox,"");
+							
 						}else {
 							boolean isLocate = isLocate(input, game);
 							if (isLocate) {
 								game.locate(input);
-								game(game);
+								runGame(game,"","","");
+								
 							}else {
 								throw new InvalidOptionException(input);
+								
 							}
+							
 						}
+						
 					}
+					
 				}
+				
 			}
-			
-			
+
+
 		} catch (InvalidOptionException invalidOptionException) {
 			System.err.println(invalidOptionException.getMessage());
 			pressAnyKeyToContinue();
-			game(game);
+			runGame(game,"","","");
 		}catch (IndexOutOfBoundsException indexOutOfBoundsException) {
 			System.err.println("The input option: " + input + " does not match any known option:");
 			pressAnyKeyToContinue();
-			game(game);
+			runGame(game,"","","");
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 	private boolean validId(Game game, String input) {
 		boolean valid = false;
-		
+
 		try {
 			int column = (int) input.charAt(input.length()-1);
 			int rows = Integer.parseInt( input.substring(0,input.length()-1) );
-			
+
 			if (column > game.getBoard().getColumns()) {
 				throw new NumberFormatException();
 			}else if (rows > game.getBoard().getRows()) {
@@ -193,12 +205,12 @@ public class Menu {
 			}
 			valid = true;
 		} catch (NumberFormatException numberFormatException) {
-			
+
 		}
-		
+
 		return valid;
 	}
-		
+
 	private boolean isShootFromCorner(String input, Game game) {
 		boolean isShoot = false;
 		if (input.charAt(input.length()-1) == 'V' || input.charAt(input.length()-1) == 'H') {
@@ -208,7 +220,7 @@ public class Menu {
 		}
 		return isShoot;
 	}
-	
+
 	private boolean isShoot(String input, Game game) {
 		boolean isShoot = false;
 		isShoot = validId(game,input);
@@ -226,12 +238,12 @@ public class Menu {
 			}else if (rows > 1 && rows < game.getBoard().getRows() && column > 65 && column < game.getBoard().getColumns() ) {
 				isShoot = false;
 			}
-			
+
 		}
-		
+
 		return isShoot;
 	}
-	
+
 	private boolean isLocate(String input, Game game) {
 		boolean isLocate = false;
 		if(input.charAt(input.length()-1) == 'R' || input.charAt(input.length()-1) == 'L') {
@@ -242,5 +254,5 @@ public class Menu {
 		return isLocate;
 	}
 
-	
+
 }
