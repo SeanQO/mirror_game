@@ -33,4 +33,17 @@ public class Game {
 		return playerNameAndscore + "\n" +board.toString();
 	}
 	
+	public void shoot(String id) {
+		
+	}
+	
+	public void shootFromCorner(String id) {
+		
+	}
+	
+	public void locate(String location) {
+		
+	}
+	
 }
+
