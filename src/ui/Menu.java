@@ -125,12 +125,12 @@ public class Menu {
 
 	} 
 
-	private void runGame(Game game, String sBox, String eBox, String miss) {
-		System.out.println("Sbox: " + sBox + " eBox: " + eBox + " miss: " + miss);
+	private void runGame(Game game, String sBox, String eBox, String located) {
+		System.out.println("Sbox: " + sBox + " eBox: " + eBox + " located: " + located);
 		System.out.println("**********************");
 		System.out.println("Input options:");
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
-		System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL");
+		System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL --> R for / and L for \\");
 		System.out.println("to go back to the main menu: 'menu'");
 		System.out.println("-All input characters must be on uppercase, cant shoot from a box that not on the border of the matrix.");
 		System.out.println("**********************");
@@ -161,8 +161,8 @@ public class Menu {
 						}else {
 							boolean isLocate = isLocate(input, game);
 							if (isLocate) {
-								game.locate(input);
-								runGame(game,"","","");
+								located = game.locate(input);
+								runGame(game,"","",located);
 								
 							}else {
 								throw new InvalidOptionException(input);

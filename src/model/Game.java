@@ -192,8 +192,19 @@ public class Game {
 		return finalBox;
 	}
 
-	public void locate(String input) {
-
+	public String locate(String input) {
+		Box locateBox = board.getBox(input.substring(1,input.length()-1));
+		String mirrorDirection = input.charAt(input.length()-1) + "";
+		if (locateBox.getMirror() != Mirror.EMPTY) {
+			if (locateBox.getMirror().equals(Mirror.RIGHT_MIRROR) && mirrorDirection.equals("R")) {
+				locateBox.setFounded(true);
+				if (locateBox.getMirror().equals(Mirror.LEFT_MIRROR) && mirrorDirection.equals("L")) {
+					locateBox.setFounded(true);
+				}
+			}
+		}
+		
+		return locateBox.getId();
 	}
 
 }

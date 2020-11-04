@@ -179,7 +179,6 @@ public class Board {
 		return board;
 	}
 
-
 	public Box getBox(String id) {
 		Box box = null;
 		int column = (int) id.charAt(id.length()-1);
