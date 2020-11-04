@@ -13,23 +13,23 @@ public class Game {
 		score = 0;
 		cheat = false;
 	}
-	
+
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
+
 	public int getScore() {
 		return score;
 	}
-	
+
 	public String getPlayerName() {
 		return playerName;
 	}
-	
+
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	public boolean isCheat() {
 		return cheat;
 	}
@@ -40,20 +40,51 @@ public class Game {
 
 	public String drawBoard() {
 		String playerNameAndscore = playerName + ": " + score;
-		return playerNameAndscore + "\n" +board.toString();
+		return playerNameAndscore + "\n" + board.toString(cheat);
+
 	}
-	
-	public void shoot(String id) {
-		
+
+	public void shoot(String input) {
+		Box startBox = board.getBox(input);
+
+		if (startBox.getColumn() == board.getColumns()) {
+			shootLeft();
+		}else if(startBox.getColumn() == 65) {
+			shootRight();
+		}else if (startBox.getRow() == 1) {
+			shootDownward();
+		}else if (startBox.getRow() == board.getRows()) {
+			shootUpward();
+		}
+
+
 	}
-	
-	public void shootFromCorner(String id) {
-		
+
+	public void shootFromCorner(String input) {
+
 	}
-	
-	public void locate(String location) {
-		
+
+	private void shootLeft() {
+
 	}
-	
+
+
+	private void shootRight() {
+
+	}
+
+
+	private void shootUpward() {
+
+	}
+
+	private void shootDownward() {
+
+	}
+
+	public void locate(String input) {
+
+	}
+
 }
 

@@ -8,6 +8,7 @@ public class Box {
 	private int row;
 	private int column;
 	private Mirror mirror;
+	private boolean founded;
 	
 	public Box(int row, int column) {
 		this.row = row;
@@ -55,6 +56,14 @@ public class Box {
 		return mirror;
 	}
 	
+	public boolean isFounded() {
+		return founded;
+	}
+
+	public void setFounded(boolean founded) {
+		this.founded = founded;
+	}
+
 	public void setMirror(Mirror mirror) {
 		this.mirror = mirror;
 	}

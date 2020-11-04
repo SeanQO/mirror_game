@@ -4,7 +4,7 @@ enum Mirror{
 	
 	RIGHT_MIRROR("/"),
 	LEFT_MIRROR("\\"),
-	EMPTY("");
+	EMPTY(" ");
 	
 	private String mirror;
 	
@@ -15,5 +15,6 @@ enum Mirror{
 	public String getString() {
 		return mirror;
 	}
+	
 	
 }

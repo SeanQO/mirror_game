@@ -28,9 +28,7 @@ public class Menu {
 		}catch (IOException ioException) {
 			System.err.println("-Couldnt find any previous saved data.");
 		}
-		
 		principalMenu();
-		
 		try {
 			dManager.saveData();
 		} catch (IOException ioException) {
@@ -100,8 +98,8 @@ public class Menu {
 			pressAnyKeyToContinue();
 			runOptionOne();
 		}
-		game.getBoard().generateBoxes();
 		game(game);
+		
 	}
 	
 	private Game startGame() throws NumberFormatException, ArrayIndexOutOfBoundsException{
@@ -133,36 +131,46 @@ public class Menu {
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
 		System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL");
 		System.out.println("to go back to the main menu: 'menu'");
+		System.out.println("-All input characters must be on uppercase, cant shoot from a box that not on the border of the matrix.");
 		System.out.println("**********************");
 		System.out.println(game.drawBoard());
 		String input = in.nextLine();
 		
 		try {
-			
-			if (!input.equals("menu")) {
-				boolean isShootFromCorner = isShootFromCorner(input, game);
-				if (isShootFromCorner) {
-					game.shootFromCorner(input);
-					game(game);
-				}else {
-					boolean isShoot = isShoot(input, game);
-					if (isShoot) {
-						game.shoot(input);
+			if (input.equals("cheat")) {
+				game.setCheat(true);
+				game(game);
+			}else {
+				if (!input.equals("menu")) {
+					boolean isShootFromCorner = isShootFromCorner(input, game);
+					if (isShootFromCorner) {
+						game.shootFromCorner(input);
 						game(game);
 					}else {
-						boolean isLocate = isLocate(input, game);
-						if (isLocate) {
-							game.locate(input);
+						boolean isShoot = isShoot(input, game);
+						if (isShoot) {
+							game.shoot(input);
 							game(game);
 						}else {
-							throw new InvalidOptionException(input);
+							boolean isLocate = isLocate(input, game);
+							if (isLocate) {
+								game.locate(input);
+								game(game);
+							}else {
+								throw new InvalidOptionException(input);
+							}
 						}
 					}
 				}
 			}
 			
+			
 		} catch (InvalidOptionException invalidOptionException) {
 			System.err.println(invalidOptionException.getMessage());
+			pressAnyKeyToContinue();
+			game(game);
+		}catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+			System.err.println("The input option: " + input + " does not match any known option:");
 			pressAnyKeyToContinue();
 			game(game);
 		}
@@ -187,6 +195,7 @@ public class Menu {
 		} catch (NumberFormatException numberFormatException) {
 			
 		}
+		
 		return valid;
 	}
 		
@@ -213,6 +222,8 @@ public class Menu {
 			}else if (rows == 1 && column == game.getBoard().getColumns()) {
 				isShoot = false;
 			}else if (rows == game.getBoard().getRows() && column == game.getBoard().getColumns() ) {
+				isShoot = false;
+			}else if (rows > 1 && rows < game.getBoard().getRows() && column > 65 && column < game.getBoard().getColumns() ) {
 				isShoot = false;
 			}
 			
