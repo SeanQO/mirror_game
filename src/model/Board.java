@@ -6,7 +6,6 @@ public class Board {
 	private Box firstBox;
 	private int rows;
 	private int columns;
-	@SuppressWarnings("unused")
 	private int mirrorNumber;
 
 	public Board(int rows, int columns, int mirrorNumber) {
@@ -15,6 +14,22 @@ public class Board {
 		this.mirrorNumber = mirrorNumber;
 	}
 	
+	public Box getFirstBox() {
+		return firstBox;
+	}
+
+	public int getRows() {
+		return rows;
+	}
+
+	public int getColumns() {
+		return columns;
+	}
+
+	public int getMirrorNumber() {
+		return mirrorNumber;
+	}
+
 	// *********************** Create board
 	public void generateBoxes() {
 		firstBox = new Box(1,65);
@@ -79,7 +94,6 @@ public class Board {
 		if (mirrorsToAssign > 0) {
 			int row = random.nextInt(rows) + 1;
 			int column = random.nextInt(columns-64)+65;
-			System.out.println("row: "+ row + " column: " + column);
 			addMirrors(firstBox,row, column);
 			if (mirrorsToAssign - 1 > 0) {
 				addMirrors(mirrorsToAssign - 1);

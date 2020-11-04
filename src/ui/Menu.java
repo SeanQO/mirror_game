@@ -128,33 +128,108 @@ public class Menu {
 	} 
 	
 	private void game(Game game) {
+		System.out.println("**********************");
 		System.out.println("Input options:");
 		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
 		System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL");
 		System.out.println("to go back to the main menu: 'menu'");
 		System.out.println("**********************");
 		System.out.println(game.drawBoard());
-		String input = "";
+		String input = in.nextLine();
+		
 		try {
-			 input = in.nextLine(); 
-			 boolean valid = validateInput(input);
-			 if(!valid) {
-				 throw new InvalidOptionException(input);
-			 }
+			
+			if (!input.equals("menu")) {
+				boolean isShootFromCorner = isShootFromCorner(input, game);
+				if (isShootFromCorner) {
+					game.shootFromCorner(input);
+					game(game);
+				}else {
+					boolean isShoot = isShoot(input, game);
+					if (isShoot) {
+						game.shoot(input);
+						game(game);
+					}else {
+						boolean isLocate = isLocate(input, game);
+						if (isLocate) {
+							game.locate(input);
+							game(game);
+						}else {
+							throw new InvalidOptionException(input);
+						}
+					}
+				}
+			}
+			
 		} catch (InvalidOptionException invalidOptionException) {
 			System.err.println(invalidOptionException.getMessage());
+			pressAnyKeyToContinue();
 			game(game);
 		}
 		
-		if (!input.equals("menu")) {
-			
-		}
+		
 		
 	}
 	
-	private boolean validateInput(String input) {
+	private boolean validId(Game game, String input) {
 		boolean valid = false;
+		
+		try {
+			int column = (int) input.charAt(input.length()-1);
+			int rows = Integer.parseInt( input.substring(0,input.length()-1) );
+			
+			if (column > game.getBoard().getColumns()) {
+				throw new NumberFormatException();
+			}else if (rows > game.getBoard().getRows()) {
+				throw new NumberFormatException();
+			}
+			valid = true;
+		} catch (NumberFormatException numberFormatException) {
+			
+		}
 		return valid;
 	}
+		
+	private boolean isShootFromCorner(String input, Game game) {
+		boolean isShoot = false;
+		if (input.charAt(input.length()-1) == 'V' || input.charAt(input.length()-1) == 'H') {
+			if (validId(game, input.substring(0,input.length()-1) ) ) {
+				isShoot = true;
+			}
+		}
+		return isShoot;
+	}
+	
+	private boolean isShoot(String input, Game game) {
+		boolean isShoot = false;
+		isShoot = validId(game,input);
+		if (isShoot) {
+			int column = (int) input.charAt(input.length()-1);
+			int rows = Integer.parseInt( input.substring(0,input.length()-1) );
+			if (rows == 1 && column == 65) {
+				isShoot = false;
+			}else if (rows == game.getBoard().getRows() && column == 65) {
+				isShoot = false;
+			}else if (rows == 1 && column == game.getBoard().getColumns()) {
+				isShoot = false;
+			}else if (rows == game.getBoard().getRows() && column == game.getBoard().getColumns() ) {
+				isShoot = false;
+			}
+			
+		}
+		
+		return isShoot;
+	}
+	
+	private boolean isLocate(String input, Game game) {
+		boolean isLocate = false;
+		if(input.charAt(input.length()-1) == 'R' || input.charAt(input.length()-1) == 'L') {
+			if (input.charAt(0) == 'L') {
+				isLocate = validId(game, input.substring(1,input.length()-1));
+			}
+		}
+		return isLocate;
+	}
+
 	
 }

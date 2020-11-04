@@ -4,12 +4,14 @@ public class Game {
 	private String playerName;
 	private Board board;
 	private int score;
+	private boolean cheat;
 	public Game(String playerName, int rows, int columns, int mirrorNumber) {
 		this.playerName = playerName;
 		board = new Board(rows, columns, mirrorNumber);
 		board.generateBoxes();
 		board.addMirrors(mirrorNumber);
 		score = 0;
+		cheat = false;
 	}
 	
 	public void setScore(int score) {
@@ -28,6 +30,14 @@ public class Game {
 		return board;
 	}
 	
+	public boolean isCheat() {
+		return cheat;
+	}
+
+	public void setCheat(boolean cheat) {
+		this.cheat = cheat;
+	}
+
 	public String drawBoard() {
 		String playerNameAndscore = playerName + ": " + score;
 		return playerNameAndscore + "\n" +board.toString();
