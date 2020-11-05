@@ -2,7 +2,6 @@ package ui;
 import java.io.IOException;
 
 import java.util.Scanner;
-
 import exceptions.InvalidOptionException;
 import model.DataManager;
 
@@ -129,6 +128,8 @@ public class Menu {
 			
 			dManager.newGame(name, rows, columns, mirrorNumber);
 			runGame("","","");
+			System.out.println("**********************");
+			System.out.println("Player " + dManager.getGame().getPlayerName() + " score: " + dManager.getGame().getScore() + " failed attempts: " + dManager.getGame().getFailedAttempts());
 
 		}
 		
@@ -186,7 +187,12 @@ public class Menu {
 						}
 
 					}else {
-						dManager.addPlayer(dManager.getGame().getPlayerName(), dManager.getGame().getScore());
+						String pName = dManager.getGame().getPlayerName();
+						int fScore = dManager.getGame().getScore();
+						int n  = dManager.getGame().getBoard().getRows();
+						int m = dManager.getGame().getBoard().getColumns();
+						int k = dManager.getGame().getBoard().getMirrorNumber();
+						dManager.addPlayer(pName,fScore,n,m,k);
 					}
 
 				}
@@ -202,14 +208,19 @@ public class Menu {
 				runGame("","","");
 			}
 		}else {
-			dManager.addPlayer(dManager.getGame().getPlayerName(), dManager.getGame().getScore());
+			String pName = dManager.getGame().getPlayerName();
+			int fScore = dManager.getGame().getScore();
+			int n  = dManager.getGame().getBoard().getRows();
+			int m = dManager.getGame().getBoard().getColumns();
+			int k = dManager.getGame().getBoard().getMirrorNumber();
+			dManager.addPlayer(pName,fScore,n,m,k);
 			System.out.println("**********************");
 			System.out.println("Winner, you have found all the mirrors!.");
 			System.out.println("**********************");
 		}
 
 	}
-
+	
 	private boolean validId(String input) {
 		boolean valid = false;
 

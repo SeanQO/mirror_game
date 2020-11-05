@@ -36,9 +36,8 @@ public class DataManager {
 	}
 	
 	
-	public void addPlayer(String name, int score) {
-		Player newPlayer = new Player(name,score); 
-		
+	public void addPlayer(String name, int score,int n, int m, int k) {
+		Player newPlayer = new Player(name,score, n, m, k); 
 		if (root == null) {
 			root = newPlayer;
 		}else {
@@ -84,13 +83,13 @@ public class DataManager {
 		
 		if (currentPlayer.getLeft() != null) {
 			player += inOrder(currentPlayer.getLeft());
-			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore();
+			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + " Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
 			if (currentPlayer.getRigth() != null) {
 				player += inOrder(currentPlayer.getRigth());
 				
 			}
 		}else {
-			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore();
+			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + " Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
 			if (currentPlayer.getRigth() != null) {
 				player += inOrder(currentPlayer.getRigth());
 			}

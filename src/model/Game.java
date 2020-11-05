@@ -6,18 +6,45 @@ public class Game {
 	private int score;
 	private boolean cheat;
 	private int remainingMirrors;
+	private int failedAttempts;
 	public Game(String playerName, int rows, int columns, int mirrorNumber) {
 		this.playerName = playerName;
 		board = new Board(rows, columns, mirrorNumber);
 		board.generateBoxes();
 		board.addMirrors(mirrorNumber);
 		score = 0;
+		failedAttempts = 0;
 		cheat = false;
 		remainingMirrors = mirrorNumber;
 	}
 
 	public int getScore() {
+		score = calculateScore();
 		return score;
+	}
+	
+	private int calculateScore() {
+		int finalScore = 0;
+		if (score == 0) {
+			return 0;
+		}else {
+			if (failedAttempts == 0) {
+				finalScore = board.getRows() + (board.getColumns() - 64) + score;
+			}else {
+				finalScore = board.getRows() + (board.getColumns() - 64) + score - failedAttempts;
+			}
+			
+			if (remainingMirrors != 0) {
+				finalScore -= remainingMirrors*2;
+				
+			}
+			
+			if (finalScore < score) {
+				finalScore = score;
+			}
+			
+		}
+		return finalScore;
 	}
 
 	public String getPlayerName() {
@@ -30,6 +57,10 @@ public class Game {
 	
 	public int getRemainingMirrors() {
 		return remainingMirrors;
+	}
+	
+	public int getFailedAttempts() {
+		return failedAttempts;
 	}
 	
 	public boolean isCheat() {
@@ -206,7 +237,11 @@ public class Game {
 				locateBox.setFounded(true);
 				remainingMirrors --;
 				score ++;
+			}else {
+				failedAttempts ++;
 			}
+		}else {
+			failedAttempts ++;
 		}
 		
 		return locateBox.getId();
