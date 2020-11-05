@@ -5,6 +5,7 @@ public class Game {
 	private Board board;
 	private int score;
 	private boolean cheat;
+	private int remainingMirrors;
 	public Game(String playerName, int rows, int columns, int mirrorNumber) {
 		this.playerName = playerName;
 		board = new Board(rows, columns, mirrorNumber);
@@ -12,10 +13,7 @@ public class Game {
 		board.addMirrors(mirrorNumber);
 		score = 0;
 		cheat = false;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
+		remainingMirrors = mirrorNumber;
 	}
 
 	public int getScore() {
@@ -29,7 +27,11 @@ public class Game {
 	public Board getBoard() {
 		return board;
 	}
-
+	
+	public int getRemainingMirrors() {
+		return remainingMirrors;
+	}
+	
 	public boolean isCheat() {
 		return cheat;
 	}
@@ -39,7 +41,7 @@ public class Game {
 	}
 
 	public String drawBoard(String startBox, String finishBox , String findedBox) {
-		String playerNameAndscore = playerName + ": " + score;
+		String playerNameAndscore = playerName + ": " + remainingMirrors;
 		return playerNameAndscore + "\n" + board.toString(startBox, finishBox, findedBox, cheat);
 
 	}
@@ -195,17 +197,15 @@ public class Game {
 	public String locate(String input) {
 		Box locateBox = board.getBox(input.substring(1,input.length()-1));
 		String mirrorDirection = input.charAt(input.length()-1) + "";
-		System.out.println("LocateB: " + locateBox.getId() + " " + locateBox.getMirror() + "Mdir: " + mirrorDirection);
-		System.out.println(locateBox.getMirror().equals(Mirror.RIGHT_MIRROR) + " L: " + locateBox.getMirror().equals(Mirror.LEFT_MIRROR));
 		if (locateBox.getMirror() != Mirror.EMPTY) {
 			if (locateBox.getMirror().equals(Mirror.RIGHT_MIRROR) && mirrorDirection.equals("R")) {
-				System.out.println("Located");
 				locateBox.setFounded(true);
-				
+				score ++;
+				remainingMirrors --;
 			}else if (locateBox.getMirror().equals(Mirror.LEFT_MIRROR) && mirrorDirection.equals("L")) {
-				System.out.println("Located");
 				locateBox.setFounded(true);
-				
+				remainingMirrors --;
+				score ++;
 			}
 		}
 		

@@ -42,6 +42,7 @@ public class Menu {
 		System.out.println("****PRINCIPAL MENU****");
 		System.out.println("**********************");
 		System.out.println("1.Play");
+		System.out.println("2.Player list");
 		System.out.println("3.Exit");
 	}
 
@@ -72,6 +73,10 @@ public class Menu {
 		switch (option) {
 		case 1:
 			runOptionOne();
+			break;
+			
+		case 2:
+			runOptionTwo();
 			break;
 
 		case 3:
@@ -126,70 +131,75 @@ public class Menu {
 	} 
 
 	private void runGame(Game game, String sBox, String eBox, String located) {
-		System.out.println("**********************");
-		System.out.println("Input options:");
-		System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
-		System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL --> R for / and L for \\");
-		System.out.println("to go back to the main menu: 'menu'");
-		System.out.println("-All input characters must be on uppercase, cant shoot from a box that not on the border of the matrix.");
-		System.out.println("**********************");
-		System.out.println("- S --> where the laser entered, E --> where the laser came out, M --> if the laser entered and came out in the same box.");
-		System.out.println("- X --> the box sought doesnt have a mirror or the mirror is not in the correct direction");
-		System.out.println(game.drawBoard(sBox, eBox, located));
-		String input = in.nextLine();
+		if(game.getRemainingMirrors() > 0) {
+			System.out.println("**********************");
+			System.out.println("Input options:");
+			System.out.println("to shoot the lazer bean: ex. 1B. --> from a corner 1AV or 1AH: vertical or horizontal.");
+			System.out.println("To locate a mirror: L follow by the position and the direction of the mirror: ex. L1AR or L1AL --> R for / and L for \\");
+			System.out.println("to go back to the main menu: 'menu'");
+			System.out.println("-All input characters must be on uppercase, cant shoot from a box that not on the border of the matrix.");
+			System.out.println("**********************");
+			System.out.println("- S --> where the laser entered, E --> where the laser came out, M --> if the laser entered and came out in the same box.");
+			System.out.println("- X --> the box sought doesnt have a mirror or the mirror is not in the correct direction");
+			System.out.println(game.drawBoard(sBox, eBox, located));
+			String input = in.nextLine();
 
-		try {
-			if (input.equals("cheat")) {
-				game.setCheat(!game.isCheat());
-				runGame(game,"","","");
+			try {
+				if (input.equals("cheat")) {
+					game.setCheat(!game.isCheat());
+					runGame(game,"","","");
 
-			}else {
-				if (!input.equals("menu")) {
-					boolean isShootFromCorner = isShootFromCorner(input, game);
-					
-					if (isShootFromCorner) {
-						sBox = input.substring(0,input.length()-1);
-						eBox = game.shootFromCorner(input);
-						runGame(game,sBox,eBox,"");
-						
-					}else {
-						boolean isShoot = isShoot(input, game);
-						if (isShoot) {
-							sBox = input;
-							eBox = game.shoot(input);
+				}else {
+					if (!input.equals("menu")) {
+						boolean isShootFromCorner = isShootFromCorner(input, game);
+
+						if (isShootFromCorner) {
+							sBox = input.substring(0,input.length()-1);
+							eBox = game.shootFromCorner(input);
 							runGame(game,sBox,eBox,"");
-							
+
 						}else {
-							boolean isLocate = isLocate(input, game);
-							if (isLocate) {
-								located = game.locate(input);
-								runGame(game,"","",located);
-								
+							boolean isShoot = isShoot(input, game);
+							if (isShoot) {
+								sBox = input;
+								eBox = game.shoot(input);
+								runGame(game,sBox,eBox,"");
+
 							}else {
-								throw new InvalidOptionException(input);
-								
+								boolean isLocate = isLocate(input, game);
+								if (isLocate) {
+									located = game.locate(input);
+									runGame(game,"","",located);
+
+								}else {
+									throw new InvalidOptionException(input);
+
+								}
+
 							}
-							
+
 						}
-						
+
 					}
-					
+
 				}
-				
+
+
+			} catch (InvalidOptionException invalidOptionException) {
+				System.err.println(invalidOptionException.getMessage());
+				pressAnyKeyToContinue();
+				runGame(game,"","","");
+			}catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+				System.err.println("The input option: " + input + " does not match any known option:");
+				pressAnyKeyToContinue();
+				runGame(game,"","","");
 			}
-
-
-		} catch (InvalidOptionException invalidOptionException) {
-			System.err.println(invalidOptionException.getMessage());
-			pressAnyKeyToContinue();
-			runGame(game,"","","");
-		}catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-			System.err.println("The input option: " + input + " does not match any known option:");
-			pressAnyKeyToContinue();
-			runGame(game,"","","");
+		}else {
+			dManager.addPlayer(game.getPlayerName(), game.getScore());
+			System.out.println("**********************");
+			System.out.println("Winner, you have found all the mirrors!.");
+			System.out.println("**********************");
 		}
-
-
 
 	}
 
@@ -256,5 +266,13 @@ public class Menu {
 		return isLocate;
 	}
 
-
+	
+	private void runOptionTwo() {
+		System.out.println("************************");
+		System.out.println("*Player list and scores*");
+		System.out.println("************************");
+		System.out.println(dManager.toString());
+		
+	}
+	
 }
