@@ -14,6 +14,10 @@ public class DataManager {
 	
 	public DataManager(){}
 	
+	public void newGame(String playerName, int rows, int columns, int mirrorNumber) {
+		game = new Game(playerName, rows, columns, mirrorNumber);
+	}
+	
 	public Game getGame() {
 		return game;
 	}
