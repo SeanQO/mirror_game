@@ -9,10 +9,15 @@ import java.io.ObjectOutputStream;
 
 public class DataManager {
 	private Player root;
+	private Game game;
 	private final String GAME_FILE_NAME = "data/game_data.mgd";
 	
 	public DataManager(){}
 	
+	public Game getGame() {
+		return game;
+	}
+
 	public void saveData() throws IOException{
 		ObjectOutputStream oStream = new ObjectOutputStream(new FileOutputStream(GAME_FILE_NAME));
 		oStream.writeObject(root);
@@ -62,7 +67,10 @@ public class DataManager {
 
 	@Override
 	public String toString() {
-		String playersList = inOrder(root);
+		String playersList = "";
+		if (root != null) {
+			playersList  = inOrder(root);
+		}
 		
 		return playersList;
 	}

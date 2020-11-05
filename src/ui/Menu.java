@@ -1,5 +1,6 @@
 package ui;
 import java.io.IOException;
+
 import java.util.Scanner;
 
 import exceptions.InvalidOptionException;
@@ -180,6 +181,8 @@ public class Menu {
 
 						}
 
+					}else {
+						dManager.addPlayer(game.getPlayerName(), game.getScore());
 					}
 
 				}

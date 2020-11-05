@@ -88,17 +88,31 @@ public class Board {
 		return newBox;
 	}
 
-	public void addMirrors(int mirrorsToAssign) {		
-		Random random = new Random();
-		if (mirrorsToAssign > 0) {
-			int row = random.nextInt(rows) + 1;
-			int column = random.nextInt(columns-64)+65;
-			addMirrors(firstBox,row, column);
-			if (mirrorsToAssign - 1 > 0) {
-				addMirrors(mirrorsToAssign - 1);
+	public void addMirrors(int mirrorsToAssign) {	
+		if (firstBox.getRightBox() == null) {
+			if (firstBox.getBottomBox() == null) {
+				Random random = new Random();
+				Mirror mirror = null;
+				if (random.nextInt(2) == 1) {
+					mirror = Mirror.LEFT_MIRROR;
+				}else {
+					mirror = Mirror.RIGHT_MIRROR;
+				}
+				firstBox.setMirror(mirror);
 			}
+		}else {
+			Random random = new Random();
+			if (mirrorsToAssign > 0) {
+				int row = random.nextInt(rows) + 1;
+				int column = random.nextInt(columns-64)+65;
+				addMirrors(firstBox,row, column);
+				if (mirrorsToAssign - 1 > 0) {
+					addMirrors(mirrorsToAssign - 1);
+				}
 
+			}
 		}
+		
 
 	}
 
