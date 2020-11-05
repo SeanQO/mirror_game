@@ -73,6 +73,11 @@ public class Menu {
 		switch (option) {
 		case 1:
 			runOptionOne();
+			try {
+				dManager.saveData();
+			} catch (IOException ioException) {
+				System.err.println("-Couldnt save data.");
+			}
 			break;
 			
 		case 2:

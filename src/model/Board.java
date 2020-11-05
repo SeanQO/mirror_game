@@ -89,55 +89,52 @@ public class Board {
 	}
 
 	public void addMirrors(int mirrorsToAssign) {	
-		if (firstBox.getRightBox() == null) {
-			if (firstBox.getBottomBox() == null) {
-				Random random = new Random();
-				Mirror mirror = null;
-				if (random.nextInt(2) == 1) {
-					mirror = Mirror.LEFT_MIRROR;
-				}else {
-					mirror = Mirror.RIGHT_MIRROR;
-				}
-				firstBox.setMirror(mirror);
-			}
+		Random random = new Random();
+		Mirror mirror = null;
+		if (random.nextInt(2) == 1) {
+			mirror = Mirror.LEFT_MIRROR;
 		}else {
-			Random random = new Random();
-			if (mirrorsToAssign > 0) {
-				int row = random.nextInt(rows) + 1;
-				int column = random.nextInt(columns-64)+65;
-				addMirrors(firstBox,row, column);
-				if (mirrorsToAssign - 1 > 0) {
-					addMirrors(mirrorsToAssign - 1);
-				}
-
+			mirror = Mirror.RIGHT_MIRROR;
+		}
+		
+		int randomRow = random.nextInt(rows) + 1;
+		int randomColumn = random.nextInt(columns-64)+65;
+		Box randomBox = getBox(randomRow + "" + (char)randomColumn);
+		
+		if (randomBox.getMirror().equals(Mirror.EMPTY)) {
+			randomBox.setMirror(mirror);
+			if (mirrorsToAssign - 1 > 0) {
+				addMirrors(mirrorsToAssign - 1);
+				
+			}
+			
+		}else {
+			findEmpty(mirror,randomRow,randomColumn);
+			if (mirrorsToAssign - 1 > 0) {
+				addMirrors(mirrorsToAssign - 1);
+				
 			}
 		}
 		
-
 	}
 
-	private void addMirrors(Box currentBox,int row, int column) {
-		if (currentBox.getRow() == row) {
-			if (currentBox.getColumn() == column) {
-				Random random = new Random();
-				Mirror mirror = null;
-				if (random.nextInt(2) == 1) {
-					mirror = Mirror.LEFT_MIRROR;
-				}else {
-					mirror = Mirror.RIGHT_MIRROR;
-				}
-				currentBox.setMirror(mirror);
-
-			}else {
-				addMirrors(currentBox.getRightBox(),row,column);
-			}
-
+	
+	private void findEmpty(Mirror mirror, int row, int column) {
+		Box Box = getBox(row + "" + (char)column);
+		
+		if (Box.getMirror().equals(Mirror.EMPTY)) {
+			Box.setMirror(mirror);
+			
 		}else {
-			addMirrors(currentBox.getBottomBox(), row, column);
+			if (column + 1 <= columns) {
+				findEmpty(mirror, row, column+1);
+			}else if (row + 1 <= rows) {
+				findEmpty(mirror, row +1, 65);
+			}else {
+				findEmpty(mirror, 1, 65);
+			}
 		}
-
 	}
-
 
 	// *********************** board to string
 	private String columnsLine(Box currentBox) {

@@ -19,7 +19,7 @@ public class Player implements Serializable{
 		this.name = name;
 		this.score = score;
 		this.n = n; 
-		this.m = m;
+		this.m = m - 64;
 		this.k = k;
 	}
 	
