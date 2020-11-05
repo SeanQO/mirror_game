@@ -83,13 +83,13 @@ public class DataManager {
 		
 		if (currentPlayer.getLeft() != null) {
 			player += inOrder(currentPlayer.getLeft());
-			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + " Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
+			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + "-Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
 			if (currentPlayer.getRigth() != null) {
 				player += inOrder(currentPlayer.getRigth());
 				
 			}
 		}else {
-			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + " Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
+			player += "\n-" + currentPlayer.getName() + " Score: " + currentPlayer.getScore() + " -Game setings: " + currentPlayer.getN() + "*" + currentPlayer.getM() + " with " + currentPlayer.getK() + " mirrors" ;
 			if (currentPlayer.getRigth() != null) {
 				player += inOrder(currentPlayer.getRigth());
 			}

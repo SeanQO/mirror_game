@@ -135,6 +135,7 @@ public class Menu {
 			runGame("","","");
 			System.out.println("**********************");
 			System.out.println("Player " + dManager.getGame().getPlayerName() + " score: " + dManager.getGame().getScore() + " failed attempts: " + dManager.getGame().getFailedAttempts());
+			System.out.println("Board size: " + dManager.getGame().getBoard().getRows() + "*" + dManager.getGame().getBoard().getColumns() + " with " + dManager.getGame().getBoard().getMirrorNumber() + " mirrors" );
 
 		}
 		
